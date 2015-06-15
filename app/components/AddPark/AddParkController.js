@@ -1,0 +1,5 @@
+var app = angular.module("dengueApp",["ui.router"]);
+
+app.controller("AddParkController",["$scope","$state",function($scope,$state){
+    $scope.message = "Hello";
+}]);

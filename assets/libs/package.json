@@ -1,0 +1,16 @@
+{
+  "name": "libs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "angular-resource.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.31",
+    "karma-jasmine": "^0.3.5"
+  }
+}

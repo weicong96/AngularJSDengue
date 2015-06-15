@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="dengueApp">
+	<head>
+		<meta charset="utf-8">
+		<script src="assets/js/angular.js"></script>
+		<script src="assets/js/jquery.js"></script>
+		<script src="assets/libs/angular-resource.js"></script>
+		<script src="assets/libs/ocLazyLoad.js"></script>
+		<script src="assets/libs/ui-router.min.js"></script>
+		<script src="app/app.routes.js"></script>
+		<script src="app/app.module.js"></script>
+
+	</head>
+	<body>
+		<div ng-include="'app/shared/hometemplate/top.html'"></div>
+		<a ui-sref="mainpage">Main Page</a>
+		<div ui-view></div>
+		<div ng-include="'app/shared/hometemplate/bottom.html'"></div>
+	</body>
+</html>
