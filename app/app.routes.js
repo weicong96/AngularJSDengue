@@ -12,7 +12,12 @@ app.config(function($ocLazyLoadProvider, $stateProvider , $urlRouterProvider){
 			files: [
 				'app/components/AddPark/AddParkController.js'
 			]
-			}
+		},{
+			name : "Analytics",
+			files : [
+				"app/components/Analytics/AnalyticsController.js"
+			]
+		}
 		]
 	}); 
 	$stateProvider.state("mainpage", {
@@ -36,6 +41,16 @@ app.config(function($ocLazyLoadProvider, $stateProvider , $urlRouterProvider){
 				return $ocLazyLoad.load("AddPark");
 			}]
 		}
+	})
+	.state("viewAnalytics",{
+		url : "/analytics",
+		templateUrl: "app/components/Analytics/AnalyticsView.html",
+		controller: "AnalyticsController",
+		resolve:{
+			resolvedFiles : ["$ocLazyLoad", function($ocLazyLoad){
+				return $ocLazyLoad.load("Analytics");
+			}]	
+		}
 	});
-
+	$urlRouterProvider.otherwise("/mainpage");
 });
