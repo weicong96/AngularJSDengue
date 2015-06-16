@@ -1,1 +1,37 @@
-<h2>Add Parks</h2>
+<form ng-submit="submitForm()">
+	<h4>Add Parks form</h4>
+	<table>
+		<tr>
+			<td>
+				Name: 
+			</td>
+			<td>
+				<input type='text' ng-model="park.name"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Address: 
+			</td>
+			<td colspan='3'>
+				<textarea style='width:100%' ng-model="park.address"></textarea>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Lat :
+			</td>
+			<td>
+				<input type='text' ng-model="park.lat"/>  
+			</td>
+			<td>
+				Lng : 
+			</td>
+			<td>
+				<input type='text' ng-model="park.lng"/>
+			</td>
+		</tr>
+		
+	</table>
+	<input type="submit"/>
+</form>
