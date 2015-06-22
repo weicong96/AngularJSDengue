@@ -17,6 +17,11 @@ app.config(function($ocLazyLoadProvider, $stateProvider , $urlRouterProvider){
 			files : [
 				"app/components/Analytics/AnalyticsController.js"
 			]
+		},{
+			name: "AddFormula",
+			files: [
+				"app/components/AddFormula/AddFormulaController.js"
+			]
 		}
 		]
 	}); 
@@ -42,13 +47,23 @@ app.config(function($ocLazyLoadProvider, $stateProvider , $urlRouterProvider){
 			}]
 		}
 	})
-	.state("viewAnalytics",{
+	.state("viewanalytics",{
 		url : "/analytics",
 		templateUrl: "app/components/Analytics/AnalyticsView.html",
 		controller: "AnalyticsController",
 		resolve:{
 			resolvedFiles : ["$ocLazyLoad", function($ocLazyLoad){
 				return $ocLazyLoad.load("Analytics");
+			}]	
+		}
+	})
+	.state("addformula",{
+		url : "/addformula",
+		templateUrl : "app/components/AddFormula/AddFormulaView.html",
+		controller : "AddFormulaController",
+		resolve: {
+			resolvedFiles : ["$ocLazyLoad", function($ocLazyLoad){
+				return $ocLazyLoad.load("AddFormula");
 			}]	
 		}
 	});

@@ -7,3 +7,14 @@ app.factory("Park",["API_URL","$resource",function(API_URL, $resource){
 		}
 	});
 }]);
+app.factory("Dataset", ["API_URL", "$resource", function(API_URL, $resource){
+	return $resource(API_URL+"dataset/:id",{id : "@_id"}, {
+	});
+}]);
+app.factory("Formula", ["API_URL", "$resource", function(API_URL, $resource){
+	return $resource(API_URL+"formula/:id",{id : "@_id"}, {
+		update:{
+			method: "PUT"
+		}
+	});
+}]);

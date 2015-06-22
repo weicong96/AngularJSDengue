@@ -1,0 +1,50 @@
+<h2>Add formula</h2>
+<form ng-submit="addFormula()" ng-controller="AddFormulaController">
+	<table>
+		<tr>
+			<td>
+				Name : 
+			</td>
+			<td>
+				<input type="text" ng-model="formula.name"/>
+			</td>
+		</tr>	
+		<tr>
+			<td colspan="2">
+				<h3>Define patterns</h3>
+			</td>
+		</tr>
+	</table>
+	<div ng-repeat="status in formula.statuses">
+		<h4 style='display:inline-block;'>Status : {{ status.statusValue }}</h4><span ng-click="addConditions(status)">+</span>
+		<table>	
+		<tr ng-repeat="pattern in status.patterns">
+			<td>
+				<input type='text' ng-model="pattern.frequency"/>
+			</td>
+			<td>
+				<input type='numeric' ng-model="pattern.occurences"/>
+			</td>
+			<td>
+				<input type='text' ng-model="pattern.value"/>
+			</td>
+			<td>
+				<select>
+					<option>Less</option>
+					<option>Equals</option>
+					<option>More</option>
+				</select>
+			</td>
+			<td>
+			</td>
+			<td>
+				{{ pattern.newDataset}}
+				Current : {{ pattern.dataset.name }}<br>
+				<select ng-model="pattern.newDataset" ng-options="dataset.name for dataset in datasets">
+      			</select>
+			</td>
+		</tr>
+	</table>	
+	</div>
+	<input type='submit'/>
+</form>
