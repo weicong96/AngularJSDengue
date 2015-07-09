@@ -16,9 +16,20 @@
 		</tr>
 	</table>
 	<div ng-repeat="status in formula.statuses">
-		<h4 style='display:inline-block;'>Status : {{ status.statusValue }}</h4><span ng-click="addConditions(status)">+</span>
-		<table>	
+		<h4 style='display:inline-block;'>Status : {{ status.statusValue }}</h4><input type='button' ng-click="addConditions(formula)">+</input><input type='button' ng-click="addRow(status)" value="Add Row"/>
+		<table>
 		<tr ng-repeat="pattern in status.patterns">
+			
+			<td>
+				Current : {{ pattern.dataset.name }}<br>
+				<select ng-model="pattern.newDataset" ng-options="dataset.name for dataset in datasets">
+      			</select>
+			</td>
+			<td>
+				Current : {{ pattern.compare }}<br>
+				<select ng-model="pattern.newCompare" ng-options="option for option in ['Less','Equal','More']">
+      			</select>
+			</td>
 			<td>
 				<input type='text' ng-model="pattern.frequency"/>
 			</td>
@@ -28,21 +39,8 @@
 			<td>
 				<input type='text' ng-model="pattern.value"/>
 			</td>
-			<td>
-				<select>
-					<option>Less</option>
-					<option>Equals</option>
-					<option>More</option>
-				</select>
-			</td>
-			<td>
-			</td>
-			<td>
-				{{ pattern.newDataset}}
-				Current : {{ pattern.dataset.name }}<br>
-				<select ng-model="pattern.newDataset" ng-options="dataset.name for dataset in datasets">
-      			</select>
-			</td>
+			
+			
 		</tr>
 	</table>	
 	</div>

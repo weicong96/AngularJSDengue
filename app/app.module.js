@@ -18,3 +18,12 @@ app.factory("Formula", ["API_URL", "$resource", function(API_URL, $resource){
 		}
 	});
 }]);
+app.factory("Data" , ["API_URL" , "$resource" , function(API_URL , $resource){
+	return $resource(API_URL+"data", { parkid : "@parkid"}, {
+		getParksData : {
+			method: "GET",
+			isArray: true
+		}
+	});
+
+}]);

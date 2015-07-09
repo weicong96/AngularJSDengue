@@ -22,6 +22,13 @@ app.config(function($ocLazyLoadProvider, $stateProvider , $urlRouterProvider){
 			files: [
 				"app/components/AddFormula/AddFormulaController.js"
 			]
+		},{
+			name : "GetParkInfo",
+			files: [
+				"../bower_components/Chart.js/Chart.js",
+				"bower_components/angular-chart.js/dist/angular-chart.min.js",
+				"app/components/GetParkInfo/GetParkInfoController.js"
+			]
 		}
 		]
 	}); 
@@ -66,6 +73,17 @@ app.config(function($ocLazyLoadProvider, $stateProvider , $urlRouterProvider){
 				return $ocLazyLoad.load("AddFormula");
 			}]	
 		}
-	});
+	})
+	.state("getparkinfo", {
+		url : "/getparkinfo/:parkID",
+		templateUrl: "app/components/GetParkInfo/GetParkInfoView.html",
+		controller: "GetParkInfoController",
+		resolve : {
+			resolvedFiles : ["$ocLazyLoad" , function($ocLazyLoad){
+				return $ocLazyLoad.load("GetParkInfo");
+			}]
+		}
+	})
+	;
 	$urlRouterProvider.otherwise("/mainpage");
 });
