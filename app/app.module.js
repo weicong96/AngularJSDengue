@@ -1,5 +1,5 @@
 var app = angular.module("dengueApp", ["dengueRouter","ngResource"]);
-app.constant("API_URL", "http://weicong.chickenkiller.com:3000/");
+app.constant("API_URL", "http://128.199.86.217/");
 app.factory("Park",["API_URL","$resource",function(API_URL, $resource){
 	return $resource(API_URL+"park/:id", {id : "@_id"}, {
 		update:{
@@ -25,5 +25,13 @@ app.factory("Data" , ["API_URL" , "$resource" , function(API_URL , $resource){
 			isArray: true
 		}
 	});
+}]);
 
+app.factory("Hotspot" , ["API_URL", "$resource" , function(API_URL, $resource){
+	return $resource(API_URL+"hotspots" , {} , {
+		getHotspotInformation : {
+			method : "GET",
+			isArray : true
+		}
+	});
 }]);
