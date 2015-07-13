@@ -3,6 +3,8 @@
  <map center="Singapore" zoom="11" id='map-canvas'>
     <heatmap-layer id="foo" data="data" ng-if="mapIntialized"></heatmap-layer>
   </map>-->
+  <input type='checkbox' ng-model="heatmap"/> Show Heatmap
+  <input type='checkbox' ng-model="proximity"/> Show Proximity
   <div id='map-canvas'></div>
   <ul>
   	<li ng-repeat= "park in parks"><a href='#/getparkinfo/{{ park._id }}'>{{ park.name }}</a></li>

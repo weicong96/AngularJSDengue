@@ -18,7 +18,7 @@ app.controller("AddFormulaController", ["$scope","API_URL","Dataset","Formula",f
 	}
 	$scope.addRow = function(status){
 		status.patterns.push ({compare : "",
-				 dataset : "",
+				 id : "",
 				 frequency : 0,
 				 occurences : 0,
 				 value : 0

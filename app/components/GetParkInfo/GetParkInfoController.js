@@ -7,9 +7,10 @@ app.controller("GetParkInfoController", ["$scope", "Data","$stateParams",functio
       return (value==Number(value))?"number":"string";
      }
      $scope.dataset = []
+     console.log("getting");
      var results = Data.getParksData({parkid : $stateParams.parkID}, function(){
         var result = results[0];
-        
+        console.log("back");
         for(var i = 0; i < result.data.length; i++){
           var series =  [];
           var labels = [];
@@ -38,25 +39,7 @@ app.controller("GetParkInfoController", ["$scope", "Data","$stateParams",functio
           series.push(result.data[i][0]["id"]["name"]);
           $scope.dataset.push({series: series, labels : labels, data : [data]});
         }
-        /*
-        //Loop through the grouped datasets
-        for(var i = 0; i < result.data.length;i++){
-          var data = []
-          //For this dataset, go loop through all and get all the data
-          for(var j = 0; j < result.data[i].length;j+=20){
-              $scope.labels.push(result.data[i][j].timeCollected);
-              data.push(result.data[i][j].data);
-          }
-          $scope.data.push(data);
-        }*/
-
      });
-     //$scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-     //$scope.series = ['Series A', 'Series B'];
-      //$scope.data = [
-       // [65, 59, 80, 81, 56, 55, 40],
-        //[28, 48, 40, 19, 86, 27, 90]
-      //];
       $scope.onClick = function (points, evt) {
         console.log(points, evt);
       };
