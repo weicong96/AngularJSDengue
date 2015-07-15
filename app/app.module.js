@@ -1,5 +1,5 @@
 var app = angular.module("dengueApp", ["dengueRouter","ngResource"]);
-app.constant("API_URL", "http://weicong.chickenkiller.com/");
+app.constant("API_URL", "http://128.199.86.217/");
 app.factory("Park",["API_URL","$resource",function(API_URL, $resource){
 	return $resource(API_URL+"park/:id", {id : "@_id"}, {
 		update:{

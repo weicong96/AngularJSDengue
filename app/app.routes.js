@@ -25,8 +25,6 @@ app.config(function($ocLazyLoadProvider, $stateProvider , $urlRouterProvider){
 		},{
 			name : "GetParkInfo",
 			files: [
-				"../bower_components/Chart.js/Chart.js",
-				"bower_components/angular-chart.js/dist/angular-chart.min.js",
 				"app/components/GetParkInfo/GetParkInfoController.js"
 			]
 		}

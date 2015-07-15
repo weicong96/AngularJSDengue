@@ -1,5 +1,14 @@
-<div ng-repeat="data in dataset">
+<!--<div ng-repeat="data in dataset">-->
+<!--
+<canvas id="doughnut" class="chart chart-doughnut" data="doughnutData"
+  labels="doughnutLabel"></canvas> 
+  {{ doughnutData }}
+  {{ doughnutLabel }}
+  -->
 <canvas id="line" class="chart chart-line" data="data.data"
   labels="data.labels" legend="true" series="data.series"
-  click="onClick">
-</div>
+  click="onClick" options="{showTooltips : false, bezierCurve : false}">
+  </canvas>
+
+<!--
+</div>-->
