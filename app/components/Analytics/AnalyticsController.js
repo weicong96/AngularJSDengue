@@ -12,46 +12,26 @@ app.controller("AnalyticsController",["$scope","$state","Park","Hotspot",functio
             mapTypeId: google.maps.MapTypeId.STREET
         };
         var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-        var parks = Park.query(function(){
-            /*
-            for(var i = 0; i < parks.length; i++){
-                 var park = parks[i];
-                var marker = new google.maps.Marker({
-                    position : new google.maps.LatLng(park.lat,park.lng),
-                    map : map
-                }); 
-            }
-            */
+         var parks = Park.query(function(){
             $scope.parks = parks;
-            $scope.$watchGroup(["proximity"], function(){
-                if($scope.proximity === true){
-
-                    for(var i = 0; i < parks.length; i++){
-                        var park = parks[i];
-
-                        var radiuses = [150, 300, 450, 600, 750];
-                        var circleColor = ["#0000FF", "#00FF00", "#FF0000","#00FF00", "#000FF0"];
-                        for(var j = 0; j < radiuses.length;j++){
-                            var radius = radiuses[j];
-                            var circle = new google.maps.Circle({
-                                radius : radius,
-                                map : map,
-                                strokeWeight : 0,
-                                fillColor : circleColor[j],
-                                fillOpacity: 0.15,
-                                center : new google.maps.LatLng(park.lat,park.lng)
-                            });
-                            circles.push(circle);
-                        }
+            for(var i = 0 ;i < parks.length;i++){
+                var marker = new google.maps.Marker({
+                      position: new google.maps.LatLng(parks[i]["lat"], parks[i]["lng"]),
+                      map: map,
+                      title: "Hello"
+                  });
+                var infowindow = new google.maps.InfoWindow();
+                google.maps.event.addListener(marker, "click", (function(marker, i){
+                    return function(){
+                        var content = "<div id='content'><h3>"+parks[i]["name"]+"</h3><br>Status : "+parks[i]["risk"]+"</div>";
+                        infowindow.setContent(content);
+                        infowindow.setOptions({maxWidth:200})
+                        infowindow.open(map, marker);
                     }
-                }else{
-                    for(var i = 0; i < circles.length; i++){
-                        circles[i].setMap(null);
-                    }
-                }
-            });
-        });
+                    _window.open(map, marker);
+                })(marker, i));
+            }
+    });
         var hotspots = Hotspot.query(function(){
             $scope.$watchGroup(["heatmap", "proximity"], function(){
                 if($scope.heatmap === true || $scope.proximity === true){
@@ -62,7 +42,6 @@ app.controller("AnalyticsController",["$scope","$state","Park","Hotspot",functio
                     var tempArray = [];
 
                      var radiuses = [150, 300, 450, 600, 750];
-                    var circleColor = ["#0000FF", "#00FF00", "#FF0000","#00FF00", "#000FF0"];
                     var parkIndex = 0;
                     for(var i = 0; i < hotspots.length;i++){
                         var hotspot = hotspots[i];
@@ -75,7 +54,7 @@ app.controller("AnalyticsController",["$scope","$state","Park","Hotspot",functio
                         }else if(hotspot["type"] == "PARK"){
 
                             if($scope.proximity === true){
-
+                                var circleColor = ["#00FF00", "#00DD00", "#00AA00","#009900", "#006600"];
                             var centers = [ 
                                 [
                                 new google.maps.LatLng(1.365746,103.834963),
@@ -84,23 +63,32 @@ app.controller("AnalyticsController",["$scope","$state","Park","Hotspot",functio
                                 ],[
                                 new google.maps.LatLng(1.384274, 103.944633),
                                 new google.maps.LatLng(1.381045, 103.951618),
-                                new google.maps.LatLng(1.388231, 103.938057)]];
-                            if(parkIndex < 1){
-                            
-                            for(var i = 0; i < centers[parkIndex].length;i++){
-                                for(var j = 0; j < radiuses.length;j++){
-                                    var radius = radiuses[j];
-                                    var circle = new google.maps.Circle({
-                                        radius : radius,
-                                        map : map,
-                                        strokeWeight : 0,
-                                        fillColor : circleColor[j],
-                                        fillOpacity: 0.15,
-                                        center : centers[parkIndex][i]
-                                    });
-                                    clusterCircle.push(circle);
+                                new google.maps.LatLng(1.388231, 103.938057)]
+                                , [
+                                new google.maps.LatLng(1.373633, 103.952216),
+                                new google.maps.LatLng(1.372281, 103.952591),
+                                new google.maps.LatLng(1.370243, 103.952870)
+                                ],[
+                                new google.maps.LatLng(1.276488, 103.789935),
+                                new google.maps.LatLng(1.276215, 103.791038),
+                                new google.maps.LatLng(1.275875, 103.792170)
+                                ]
+                                ];
+                            if(parkIndex < 4){
+                                for(var i = 0; i < centers[parkIndex].length;i++){
+                                    for(var j = 0; j < radiuses.length;j++){
+                                        var radius = radiuses[j];
+                                        var circle = new google.maps.Circle({
+                                            radius : radius,
+                                            map : map,
+                                            strokeWeight : 0,
+                                            fillColor : circleColor[j],
+                                            fillOpacity: 0.18,
+                                            center : centers[parkIndex][i]
+                                        });
+                                        clusterCircle.push(circle);
+                                    }
                                 }
-                            }
                             }
                         }
 
@@ -117,6 +105,7 @@ app.controller("AnalyticsController",["$scope","$state","Park","Hotspot",functio
                         }                 
                     }
                     if($scope.proximity === true){
+                         var circleColor = ["#FDDBE1", "#FAABE1", "#F88BE1","#F66BE1", "#F55BE1"];
                         for(var i = 0; i < clusterPoints.length;i++){
                             for(var j = 0; j < radiuses.length;j++){
                                 var radius = radiuses[j];
@@ -125,7 +114,7 @@ app.controller("AnalyticsController",["$scope","$state","Park","Hotspot",functio
                                     map : map,
                                     strokeWeight : 0,
                                     fillColor : circleColor[j],
-                                    fillOpacity: 0.15,
+                                    fillOpacity: 0.1,
                                     center : clusterPoints[i]
                                 });
                                 clusterCircle.push(circle);

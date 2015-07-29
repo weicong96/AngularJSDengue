@@ -66,7 +66,7 @@ app.controller("GetParkInfoController", ["$scope", "Data","$stateParams",functio
       console.log(labels);
       var validLabels = [];
       for(var i = 0; i < labelsCount.length;i++){
-        if(labelsCount[i] == 2){
+        if(labelsCount[i] == 3){
           validLabels.push(labels[i]);
         }
       }
