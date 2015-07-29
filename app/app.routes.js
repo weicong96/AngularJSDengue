@@ -83,5 +83,5 @@ app.config(function($ocLazyLoadProvider, $stateProvider , $urlRouterProvider){
 		}
 	})
 	;
-	$urlRouterProvider.otherwise("/mainpage");
+	$urlRouterProvider.otherwise("/analytics");
 });

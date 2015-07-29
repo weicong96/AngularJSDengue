@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script
+src="http://maps.googleapis.com/maps/api/js">
+</script>
+<script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
+<script src="https://cdn.firebase.com/libs/geofire/3.2.2/geofire.min.js"></script>
+<script src="rsvp.min.js"></script>
+<script src="geofire.min.js"></script>
+<script src="lodash.min.js"></script>
+<script>
+var map;
+var rootRef = new Firebase('http://amber-heat-3566.firebaseio.com/hendrik/sensors/sensorsLocation');
+var geoFire = new GeoFire(rootRef);
+var radiusInKm = 0.1;
+var locations = {
+  "Middle": [1.3554526,103.8245625]
+	};
+var center = locations["Middle"]
+var geoQuery = geoFire.query({
+  center: center,
+  radius: 5000
+});
+
+var ref = geoFire.ref();  // ref === firebaseRef
+var sensorsInQuery = {};
+var myCenter=new google.maps.LatLng(1.3554526,103.8245625);
+var onKeyEnteredRegistration = geoQuery.on("key_entered", function(key, location, distance) {
+  console.log(key + " entered query at " + location + " (" + distance + " km from center)");
+  
+  rootRef.child(key).once("value", function(dataSnapshot) {
+
+    SensorInfo = dataSnapshot.val();
+	console.log(dataSnapshot.val());
+	
+		var marker = new google.maps.Marker({
+		position: new google.maps.LatLng(location[0], location[1]),
+		optimized: true,
+		map: map
+	});
+	  	var loc = new google.maps.LatLng(location[0], location[1]);
+   var circle = new google.maps.Circle({
+    strokeColor: "#6D3099",
+    strokeOpacity: 0.2,
+    strokeWeight: 1,
+    fillColor: "#B650FF",
+    fillOpacity: 0.35,
+    map: map,
+    center: loc,
+    radius: ((radiusInKm) * 1000),
+    draggable: false
+	});
+    });
+  });
+  var onKeyExitedRegistration = geoQuery.on("key_exited", function(key, location, distance) {
+  console.log(key + " exited query to " + location + " (" + distance + " km from center)");
+});
+	
+
+
+
+  
+  
+ function initialize()
+{
+var mapProp = {
+  center: myCenter,
+  zoom:13,
+  mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+
+  map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+  
+  google.maps.event.addListener(map, 'click', function(event) {
+    placeMarker(event.latLng);
+  });
+}
+
+function placeMarker(location) {
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
+  });
+  var loc = new google.maps.LatLng(location.lat(), location.lng());
+   var circle = new google.maps.Circle({
+    strokeColor: "#6D3099",
+    strokeOpacity: 0.2,
+    strokeWeight: 1,
+    fillColor: "#B650FF",
+    fillOpacity: 0.35,
+    map: map,
+    center: loc,
+    radius: ((radiusInKm) * 1000),
+    draggable: false
+	});
+  var infowindow = new google.maps.InfoWindow({
+    content: 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
+  });
+  
+   google.maps.event.addListener(marker, 'click', function() {
+    var lat = parseFloat(location.lat());
+    var lon = parseFloat(location.lng());
+    var myID = "Sensor-" + generateRandomString(10);
+
+    geoFire.set(myID, [lat, lon]).then(function() {
+      console.log(myID + ": setting position to [" + lat + "," + lon + "]");
+    });
+
+    return false;
+  });
+  infowindow.open(map,marker);
+}
+
+ function generateRandomString(length) {
+      var text = "";
+      var validChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for(var i = 0; i < length; i++) {
+          text += validChars.charAt(Math.floor(Math.random() * validChars.length));
+      }
+
+      return text;
+  }
+
+google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+</head>
+
+<body>
+<div id="googleMap" style="width:1920px;height:1080px;"></div>
+
+</body>
+</html>

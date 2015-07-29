@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style>
+		html {height:100%}
+		body {height:100%;margin:0; padding:0}
+		#map-canvas {height:100%}
+	</style>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDLPyW8Tcm9LxHLFun_sTc9rwSjwOAfXvI"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false"></script>
+	<script type="text/javascript" src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
+	<script text="text/javascript">
+		
+	</script>
+	<script text="text/javascript">
+		var map, temperattureHM, humidityHM ;
+			
+		var gradientOriginal = [
+				'rgba(0, 255, 255, 0)', // transparent
+				'rgba(94, 251, 110, 1)', // jade green
+				'rgba(255, 219, 88, 1)', // mustard yellow
+				'rgba(255, 128, 64, 1)', // mango orange
+				'rgba(229, 84, 81, 1)' // valentine red
+		]
+				
+		function initialize(){
+			var mapOptions = {
+			center:new google.maps.LatLng(1.379561, 103.952331),
+			zoom:15,
+			//mapTypeId (optional); ROADMAP, SATELLITE, HYBRID,TERRAIN
+			mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			
+			map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);	
+			
+			var sum = 0;
+			var sum2 = 0;
+			var counter = 0;
+			var arr =  new google.maps.MVCArray();
+			var arr2 =  new google.maps.MVCArray();
+			var ref = new Firebase("https://amber-heat-3566.firebaseio.com/yuhan/data/park/paris-ris/date/26-june-2015/1300");
+			ref.on("child_added", function(snap) {
+				var minTemp = 100;
+				var maxTemp = 0;
+				var minHum = 100;
+				var maxHum =0;
+				if(counter == 0){
+					ref.on("child_added", function(shot){
+						if(minTemp > parseFloat(shot.val().temperature)){
+							minTemp = parseFloat(shot.val().temperature);
+						}
+						if(maxTemp < parseFloat(shot.val().temperature)){
+							maxTemp = parseFloat(shot.val().temperature);
+						}
+						if(minHum > parseFloat(shot.val().humidity)){
+							minHum = parseFloat(shot.val().humidity);
+						}
+						if(maxHum < parseFloat(shot.val().humidity)){
+							maxHum = parseFloat(shot.val().humidity);
+						}
+					});
+				}
+				arr.push({location: new google.maps.LatLng(parseFloat(snap.val().lat), parseFloat(snap.val().lng)), weight: (((parseFloat(snap.val().temperature)-minTemp)/(maxTemp-minTemp))*100)});
+				
+				temperattureHM = new google.maps.visualization.HeatmapLayer({
+					data: arr,
+				});
+				temperattureHM.setOptions({
+					dissipating: true,
+					gradient: gradientOriginal,
+					radius: 20,
+					opacity: 0.8,
+				});
+				
+				arr2.push({location: new google.maps.LatLng(parseFloat(snap.val().lat), parseFloat(snap.val().lng)), weight: (((parseFloat(snap.val().humidity)-minHum)/(maxHum-minHum))*100)});
+				counter++;
+	
+				humidityHM = new google.maps.visualization.HeatmapLayer({
+					data: arr2,
+				});
+				humidityHM.setOptions({
+					dissipating: true,
+					gradient: gradientOriginal,
+					radius: 20,
+					opacity: 0.8,
+				});
+				
+				var temp = parseFloat(snap.val().temperature);
+				sum = sum + temp;
+				
+				var temp2 = parseFloat(snap.val().humidity);
+				sum2 = sum2 + temp2;
+				if(counter == 90){
+					var avgTemp = sum/counter;
+					var avgHum = sum2/counter;
+						
+					var contentString = 
+					'<h1>-Pasir Ris Park-</h1>'+
+					'<div>Temperature: '+avgTemp.toFixed(1)+'</br>Humidity: '+avgHum.toFixed(0)+'</div>';
+					
+					var infowindow = new google.maps.InfoWindow({
+						content: contentString
+					});
+					
+					var marker = new google.maps.Marker({
+						position: new google.maps.LatLng(1.380505, 103.951398),
+						map: map,
+						title: '-Average Readings-'
+					});
+					google.maps.event.addListener(marker, 'click', function() {
+						infowindow.open(map,marker);
+					});
+				}
+			});	
+		}
+		google.maps.event.addDomListener(window, 'load', initialize);
+		
+		function changeOpacityCritical() {
+			temperattureHM.set('opacity', temperattureHM.get('opacity') ? null : 0.7);
+			humidityHM.set('opacity', humidityHM.get('opacity') ? null : 0.7);
+		}
+		
+		function changeOpacityNormal() {
+			temperattureHM.set('opacity', temperattureHM.get('opacity') ? null : 8);
+			humidityHM.set('opacity', humidityHM.get('opacity') ? null : 8);
+		}
+
+		function toogleTemperature() {
+			changeOpacityNormal();
+			temperattureHM.setMap(temperattureHM.getMap() ? null : map);
+		}
+		
+		function toogleHumidity() {
+			changeOpacityNormal();
+			humidityHM.setMap(humidityHM.getMap() ? null : map);
+		}
+		function toogleCritical() {
+			changeOpacityCritical();
+			humidityHM.setMap(humidityHM.getMap() ? null : map);
+			temperattureHM.setMap(temperattureHM.getMap() ? null : map);
+			
+			
+		}
+	</script>
+</head>
+<body>
+	<button onclick="toogleTemperature()" >Temperature</button>
+	<button onclick="toogleHumidity()" >Humidity</button>
+	<button onclick="toogleCritical()" >Critical</button>
+	<div id="map-canvas">
+	</div>
+	<div></div>
+</body>
+</html>
