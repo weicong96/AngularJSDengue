@@ -39,8 +39,11 @@
 			<td>
 				<input type='text' ng-model="pattern.value"/>
 			</td>
+			<td>
+			{{ pattern }}
+				<input type='button' value="Delete" onclick="removePattern(pattern)"/>
 			
-			
+			</td>
 		</tr>
 	</table>	
 	</div>

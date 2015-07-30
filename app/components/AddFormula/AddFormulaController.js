@@ -16,6 +16,9 @@ app.controller("AddFormulaController", ["$scope","API_URL","Dataset","Formula",f
 			], statusValue : statuses[nextIndex]});
 		}
 	}
+	$scope.removePattern = function(pattern){
+		console.log(pattern);
+	};
 	$scope.addRow = function(status){
 		status.patterns.push ({compare : "",
 				 id : "",
